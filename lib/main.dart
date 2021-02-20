@@ -1,169 +1,137 @@
-    import 'dart:math';
+import 'dart:math';
 
-    import 'package:flutter/material.dart';
-    import 'package:fatmakirtilproject/MessageCard.dart';
-    import 'package:bottom_navigation_badge/bottom_navigation_badge.dart';
+import 'package:fatmakirtilproject/Message.dart';
+import 'package:flutter/material.dart';
+import 'package:fatmakirtilproject/MessageCard.dart';
+import 'package:bottom_navigation_badge/bottom_navigation_badge.dart';
+import 'package:fatmakirtilproject/Profile.dart';
 
-    void main() => runApp(fatmakirtilproject());
-    class fatmakirtilproject extends StatelessWidget {
-      @override
-      Widget build(BuildContext context) {
-      return MaterialApp(
-        title: 'Material App',
-        debugShowCheckedModeBanner: false,
-        home: new SlowlyHome(),
-      );
-    }
-  }
-    class SlowlyHome extends StatefulWidget {
-      const SlowlyHome({
-        Key key,
-      }) : super(key: key);
+/*void gotoMessage(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => Message()),
+  );
+}*/
 
-      @override
-      _SlowlyHomeState createState() => _SlowlyHomeState();
-    }
 
-    class _SlowlyHomeState extends State<SlowlyHome> {
-      int _currentIndex = 0;
 
-      @override
-      void initState() {
-      super.initState();
-      _setBadge();
-      }
 
-      void _setBadge() {
-        setState(() {
-          items = badger.setBadge(items, "1", 1);
-        });
-      }
-
-      BottomNavigationBadge badger = new BottomNavigationBadge(
-          backgroundColor: Colors. red,
-          badgeShape: BottomNavigationBadgeShape.circle,
-          textColor: Colors.white,
-          position: BottomNavigationBadgePosition.topRight,
-          textSize: 12);
-
-      @override
-      Widget build(BuildContext context) {
-        var emptyWidth = MediaQuery.of(context).size.width * 0.20;
-        return Scaffold(
-
-            bottomNavigationBar: BottomNavigationBar(
-                currentIndex: _currentIndex,
-                showSelectedLabels: false,
-                backgroundColor: Colors.white,
-                onTap: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-        type: BottomNavigationBarType.fixed,
-        items: items,
+void main() => runApp(fatmakirtilproject());
+class fatmakirtilproject extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Material App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(color: Colors.white10, elevation: 0),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      body: SafeArea(
-        child: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(),
-            ),
-          ],
-        ),
-      ),
-     ),
+      home: new SlowlyHome(),
     );
-   }
+  }
+}
 
-   Padding get _footerSectionWidget =>
-       Padding(
-   ListView _middleSectionWidget(double emptyWidth) {
-     return ListView.separated(
-      padding: EdgeInsets.fromLTRB(10, 0, 0, 10),
-      separatorBuilder: (BuildContext bcs, index) {
-        return SizedBox(
-          width: 10,
-        );
-      },
-      itemCount: 5,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext bc, index) {
 
-        return index == 0
-        ? Row(
-          children: <Widget>[
-            Container(
-              width: emptyWidth,
-            ),
-            MessageCard()
-          ],
-        )
-        : MessageCard();
-      },
-     );
-    }
 
-     Padding get _headerSectionWidget =>
-         Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                  width: 50,
-                  height: 50,
-                  //child: Image.asset("assets/images/slowlyapp.png")
-                ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Text(
-                 "Recent Received",
-                style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-               ),
-              ),
-            ],
-          ),
-        );
 
-      List<BottomNavigationBarItem> items = [
-        BottomNavigationBarItem(
-            icon: Image.asset(
-            "assets/images/",
-            width: 30,
-            ),
-            title: Text("")),
-        BottomNavigationBarItem(
+class SlowlyHome extends StatefulWidget {
+  const SlowlyHome({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _SlowlyHomeState createState() => _SlowlyHomeState();
+}
+
+class _SlowlyHomeState extends State<SlowlyHome> {
+
+  PageController _pageController = PageController();
+  List<Widget> _screens = [
+    Profile(), Message(),
+  ];
+
+  int _selectedIndex = 0;
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _onItemTapped(int selectedIndex) {
+    _pageController.jumpToPage(selectedIndex);
+  }
+
+  //int _currentIndex = 0;
+
+  bool _show = true;
+
+  void showBottomBar() {
+    setState(() {
+      _show = true;
+    });
+  }
+
+  void hideBottomBar() {
+    setState(() {
+      _show = false;
+    });
+  }
+  @override
+  /*void initState() {
+    super.initState();
+    _setBadge();
+  }
+
+  void _setBadge() {
+    setState(() {
+      items = badger.setBadge(items, "1", 1);
+    });
+  }
+
+  BottomNavigationBadge badger = new BottomNavigationBadge(
+      backgroundColor: Colors. red,
+      badgeShape: BottomNavigationBadgeShape.circle,
+      textColor: Colors.white,
+      position: BottomNavigationBadgePosition.topRight,
+      textSize: 12);*/
+
+  @override
+  Widget build(BuildContext context) {
+    var emptyWidth = MediaQuery.of(context).size.width * 0.20; // list başında boşluk bırakmak için
+    return Scaffold(
+
+      body: PageView(
+        controller: _pageController,
+        children: _screens,
+        onPageChanged: _onPageChanged,
+        physics: NeverScrollableScrollPhysics(),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: _onItemTapped,
+        items: [
+          BottomNavigationBarItem(
             icon: Icon(
-              Icons.message,
-              size: 30,
-              color: Colors.black38,
+              Icons.person_pin_rounded,
+              color: _selectedIndex == 0 ? Colors.teal: Colors.grey,
             ),
-            title: Text("")),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.search, size: 30, color: Colors.black38),
-            title: Text("")),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.edit, size: 30, color: Colors.black38),
-            title: Text("")),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline, size: 30, color: Colors.black38),
-            title: Text(""))
-      ];
-    }
-
+            title: Text('Notes',
+              style: TextStyle(
+                color: _selectedIndex == 0 ? Colors.teal: Colors.grey,
+              ),
+                      ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+                Icons.sticky_note_2_sharp,
+                color: _selectedIndex == 1 ? Colors.teal: Colors.grey,
+            ),
+            title: Text('Add',
+              style: TextStyle(
+                color: _selectedIndex == 1 ? Colors.teal: Colors.grey,
+              ),),
+          ),
+        ],
+      ),
+    );
+  }
+}
